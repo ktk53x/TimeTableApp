@@ -41,7 +41,7 @@ public class AddSlot extends Dialog implements android.view.View.OnClickListener
     private ArrayList<String> subjects = new ArrayList<>();
     private ArrayAdapter<String> adapter;
 
-    AddSlot(Activity activity)
+    public AddSlot(Activity activity)
     {
         super(activity);
         this.activity = activity;

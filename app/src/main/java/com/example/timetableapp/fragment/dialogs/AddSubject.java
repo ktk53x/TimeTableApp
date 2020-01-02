@@ -37,7 +37,7 @@ public class AddSubject extends Dialog implements android.view.View.OnClickListe
     HashMap<Integer, String> btech_des = new HashMap<>();
     HashMap<Integer, String> branches = new HashMap<>();
 
-    AddSubject(Activity activity)
+    public AddSubject(Activity activity)
     {
         super(activity);
         this.activity = activity;

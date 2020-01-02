@@ -31,13 +31,13 @@ public class PageAdapter extends FragmentStatePagerAdapter
             case 0:
                 return new Monday(weekDays.getWeekdaySubjectSlot("Monday"));
             case 1:
-                return new Tuesday();
+                return new Tuesday(weekDays.getWeekdaySubjectSlot("Tuesday"));
             case 2:
-                return new Wednesday();
+                return new Wednesday(weekDays.getWeekdaySubjectSlot("Wednesday"));
             case 3:
-                return new Thursday();
+                return new Thursday(weekDays.getWeekdaySubjectSlot("Thursday"));
             case 4:
-                return new Friday();
+                return new Friday(weekDays.getWeekdaySubjectSlot("Friday"));
             default:
                 return new Monday(weekDays.getWeekdaySubjectSlot("Monday"));
         }

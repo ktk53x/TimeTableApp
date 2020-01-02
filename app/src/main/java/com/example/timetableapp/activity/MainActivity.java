@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity
 
     public void ViewTimeTable(View view)
     {
+        bTech.getSubject().clear();
+        bTech.getSubjectSlot().clear();
         HashMap<Integer, String> btech_des = new HashMap<>();
         HashMap<Integer, String> branches = new HashMap<>();
         btech_des.put(1, "BTech");
@@ -81,6 +83,7 @@ public class MainActivity extends AppCompatActivity
             branch = branches.get(details.get("branch"));
 
         branchYear = branch + " " + year;
+
         getSubjects();
 
 

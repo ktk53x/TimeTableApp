@@ -26,6 +26,17 @@ public class WeekDays implements Serializable {
         Objects.requireNonNull(weekDayHashMap.get(weekday)).subjectSlots.add(subjectSlot);
     }
 
+    public void clearWeekdaySubjectSlot()
+    {
+        Objects.requireNonNull(weekDayHashMap.get("Monday")).subjectSlots.clear();
+        Objects.requireNonNull(weekDayHashMap.get("Tuesday")).subjectSlots.clear();
+        Objects.requireNonNull(weekDayHashMap.get("Wednesday")).subjectSlots.clear();
+        Objects.requireNonNull(weekDayHashMap.get("Thursday")).subjectSlots.clear();
+        Objects.requireNonNull(weekDayHashMap.get("Friday")).subjectSlots.clear();
+
+
+    }
+
     public ArrayList<SubjectSlot> getWeekdaySubjectSlot(String weekday){
         if(weekDayHashMap.get(weekday)!=null)
             return weekDayHashMap.get(weekday).getSubjectSlots();
