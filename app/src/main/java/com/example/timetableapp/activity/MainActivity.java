@@ -1,5 +1,8 @@
 package com.example.timetableapp.activity;
 
+import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
@@ -8,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.timetableapp.EditTimeTableActivity;
 import com.example.timetableapp.fragment.dialogs.AddSlot;
 import com.example.timetableapp.fragment.dialogs.AddSubject;
 import com.example.timetableapp.R;
@@ -31,6 +35,7 @@ public class MainActivity extends AppCompatActivity
     private TextView hello_world;
     public final String TAG = "Kartikeya";
     HashMap<String, Integer> details;
+    HashMap<String, Subject> subjects;
     BTech bTech = new BTech();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String branchYear;
@@ -51,28 +56,30 @@ public class MainActivity extends AppCompatActivity
 
     public void AddSlotDialogBox(View view)
     {
-        AddSlot s = new AddSlot(MainActivity.this);
+        AddSlot s = new AddSlot(0,MainActivity.this);
+        s.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
         s.show();
     }
 
     public void ViewTimeTable(View view)
     {
-        bTech.getSubject().clear();
-        bTech.getSubjectSlot().clear();
+//        bTech.getSubject().clear();
+//        bTech.getSubjectSlot().clear();
         HashMap<Integer, String> btech_des = new HashMap<>();
         HashMap<Integer, String> branches = new HashMap<>();
         btech_des.put(1, "BTech");
         btech_des.put(2, "BDes");
-        branches.put(1, "Computer Science And Engineering");
-        branches.put(2, "Electronics And Communication Engineering");
-        branches.put(3, "Mechanical Engineering");
-        branches.put(4, "Civil Engineering");
-        branches.put(6, "Bio Technology");
-        branches.put(7, "Chemical Engineering");
-        branches.put(8, "Electrical Engineering");
-        branches.put(21, "Engineering Physics");
-        branches.put(22, "Chemical Science And Technology");
-        branches.put(23, "Mathematics And Computing");
+        branches.put(1, "CSE");
+        branches.put(2, "ECE");
+        branches.put(3, "ME");
+        branches.put(4, "CE");
+        branches.put(6, "BT");
+        branches.put(7, "CL");
+        branches.put(8, "EEE");
+        branches.put(21, "EP");
+        branches.put(22, "CST");
+        branches.put(23, "MC");
         details = TimeTableUtilities.roll_number_parser(roll_number.getText().toString());
         String year = "None", course_type = "None", branch = "None";
         if(details.get("year") != null)
@@ -82,19 +89,17 @@ public class MainActivity extends AppCompatActivity
         if(details.get("branch") != null)
             branch = branches.get(details.get("branch"));
 
-        branchYear = branch + " " + year;
-
-        getSubjects();
+        branchYear = year + " " + branch;
+        getSubjects(branchYear);
 
 
     }
-    public void getSubjects()
+    public void getSubjects(final String yearBranch)
     {
         db
                 .collection("timetable")
                 .document("BTech")
-                .collection("Subject")
-                .whereEqualTo("branchYear", branchYear)
+                .collection(yearBranch)
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -104,20 +109,25 @@ public class MainActivity extends AppCompatActivity
                         {
                             for(QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult()))
                             {
-                                bTech.addSubject(Objects.requireNonNull(document.toObject(Subject.class)));
+                                Subject temp = document.toObject(Subject.class);
+                                subjects.put(temp.getCourseName(),temp);
                             }
-                            getSlots();
+                            getSlots(yearBranch);
+                        }
+                        else
+                        {
+                            //TODO: exception handling
                         }
                     }
                 });
     }
 
-    public void getSlots()
+    public void getSlots(String yearBranch)
     {
         db
                 .collection("timetable")
                 .document("BTech")
-                .collection("SubjectSlot")
+                .collection(branchYear + "Slots")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -125,27 +135,34 @@ public class MainActivity extends AppCompatActivity
                     {
                         if(task.isSuccessful())
                         {
+                            WeekDays temp = new WeekDays();
                             for(QueryDocumentSnapshot document: Objects.requireNonNull(task.getResult()))
                             {
-                                bTech.addSubjectSlot(Objects.requireNonNull(document.toObject(SubjectSlot.class)));
+                                temp = document.toObject(WeekDays.class);
                             }
-                            showTimeTable();
+                            startActivity(ShowTimeTable.getInstance(MainActivity.this, temp, subjects));
                         }
                     }
                 });
     }
 
-    private void showTimeTable() {
-        WeekDays weekDays = new WeekDays();
-        for(SubjectSlot subjectSlot : bTech.getSubjectSlot()){
-            for(Subject subject :bTech.getSubject()){
-                if(subject.getCourseName().equals(subjectSlot.getSubject())){
-                    {
-                        weekDays.addWeekdaySubjectSlot(subjectSlot.getDayOfWeek(), subjectSlot);
-                    }
-                }
-            }
-        }
-        startActivity(ShowTimeTable.getInstance(this, weekDays));
+//
+//    private void showTimeTable(WeekDays weekDays) {
+//        for(SubjectSlot subjectSlot : bTech.getSubjectSlot()){
+//            for(Subject subject :bTech.getSubject()){
+//                if(subject.getCourseName().equals(subjectSlot.getSubject())){
+//                    {
+//                        weekDays.addWeekdaySubjectSlot(subjectSlot.getDayOfWeek(), subjectSlot);
+//                    }
+//                }
+//            }
+//        }
+//    }
+
+    public void EditTimeTable(View view)
+    {
+        Intent intent = new Intent(getBaseContext(), EditTimeTableActivity.class);
+        startActivity(intent);
+
     }
 }

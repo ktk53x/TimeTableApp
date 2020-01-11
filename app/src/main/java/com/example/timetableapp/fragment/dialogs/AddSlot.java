@@ -8,12 +8,13 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.example.timetableapp.Interfaces.send_data;
 import com.example.timetableapp.R;
 import com.example.timetableapp.model.SubjectSlot;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -23,8 +24,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Arrays;
 import java.util.Objects;
 
 
@@ -34,17 +34,22 @@ import java.util.Objects;
 public class AddSlot extends Dialog implements android.view.View.OnClickListener
 {
     private Activity activity;
-    private EditText slot_end, slot_start;
+    private int position;
+    private Spinner slot_end;
+    private TextView slot_start;
     private Spinner subject_spinner, day_of_week;
     private Button add_slot, cancel;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private ArrayList<String> subjects = new ArrayList<>();
     private ArrayAdapter<String> adapter;
+    private ArrayAdapter<String> end_time_adapter;
 
-    public AddSlot(Activity activity)
+
+    public AddSlot(int position, Activity activity)
     {
         super(activity);
         this.activity = activity;
+        this.position = position;
     }
 
     @Override
@@ -62,6 +67,15 @@ public class AddSlot extends Dialog implements android.view.View.OnClickListener
         adapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         subject_spinner.setAdapter(adapter);
+
+        ArrayList<String> slots = new ArrayList<String>(Arrays.asList(getContext().getResources().getStringArray(R.array.time_slot_list)));
+        ArrayList<String> endslots = position == slots.size() ? new ArrayList<String>() : new ArrayList<String>(slots.subList(position + 1, slots.size()));
+
+        end_time_adapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item,endslots);
+        end_time_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        slot_end.setAdapter(end_time_adapter);
+
+        slot_start.setText(slots.get(position));
         db.collection("timetable").document("BTech").collection("Subject")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -97,6 +111,7 @@ public class AddSlot extends Dialog implements android.view.View.OnClickListener
         {
             case R.id.add_slot_button:
                 AddSlotToDatabase();
+
                 dismiss();
                 break;
             case R.id.cancel_slot_button:
@@ -105,11 +120,12 @@ public class AddSlot extends Dialog implements android.view.View.OnClickListener
             default:
                 break;
         }
+
         dismiss();
     }
     private void AddSlotToDatabase()
     {
-        String subject_slot_start = slot_start.getText().toString(), subject_slot_end = slot_end.getText().toString();
+        String subject_slot_start = slot_start.getText().toString(), subject_slot_end = slot_end.getSelectedItem().toString();
         String subject_day_of_week = day_of_week.getSelectedItem().toString(), subject = subject_spinner.getSelectedItem().toString();
         SubjectSlot subjectSlot = new SubjectSlot();
         subjectSlot.setSlotStart(subject_slot_start);
@@ -118,4 +134,10 @@ public class AddSlot extends Dialog implements android.view.View.OnClickListener
         subjectSlot.setDayOfWeek(subject_day_of_week);
         db.collection("timetable").document("BTech").collection("SubjectSlot").add(subjectSlot);
     }
+//
+//
+//    @Override
+//    public void send(int pos) {
+//
+//    }
 }

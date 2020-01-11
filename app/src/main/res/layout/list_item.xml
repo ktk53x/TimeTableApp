@@ -1,60 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/list_item"
     android:padding="8dp"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <androidx.cardview.widget.CardView
+    <TextView
+        android:id="@+id/from_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="time"
+        android:paddingLeft="16dp"
+        android:paddingBottom="8dp"
+        android:paddingRight="8dp" />
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp">
-        <RelativeLayout
+        android:paddingLeft="20dp"
+        android:orientation="horizontal"
+        >
+
+        <View
+            android:layout_width="1dp"
+            android:layout_height="80dp"
+            android:layout_gravity="center"
+            android:background="#a9a9a9" />
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:padding="8dp">
+            android:layout_height="wrap_content"
+            android:background="@drawable/designbox_uncolored"
+            android:minHeight="80dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="-30dp"
+            >
             <TextView
                 android:id="@+id/subject"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8dp"
-                android:layout_alignParentTop="true"
+                android:hint="subject"
                 android:layout_centerHorizontal="true"
                 android:textStyle="bold"/>
 
-            <ImageView
-                android:id="@+id/time_image"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/subject"
-                android:contentDescription="Time"
-                android:src="@drawable/ic_access_time_black_24dp" />
+        </LinearLayout>
+    </LinearLayout>
 
-            <TextView
-                android:id="@+id/from_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/subject"
-                android:layout_toEndOf="@id/time_image"
-                android:paddingLeft="8dp"
-                android:paddingBottom="8dp"
-                android:paddingRight="8dp" />
-            <TextView
-                android:id="@+id/dash"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text=" - "
-                android:layout_toEndOf="@id/from_time"
-                android:layout_below="@id/subject"/>
-            <TextView
-                android:id = "@+id/to_time"
-                android:gravity="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:paddingBottom="8dp"
-                android:layout_toEndOf="@id/dash"
-                android:layout_below="@id/subject"/>
-        </RelativeLayout>
-    </androidx.cardview.widget.CardView>
-</FrameLayout>
+</LinearLayout>

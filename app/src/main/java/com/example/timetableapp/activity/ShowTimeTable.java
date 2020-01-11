@@ -10,21 +10,27 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.timetableapp.adapters.PageAdapter;
 import com.example.timetableapp.R;
+import com.example.timetableapp.model.Subject;
 import com.example.timetableapp.model.WeekDays;
 import com.google.android.material.tabs.TabLayout;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 public class ShowTimeTable extends AppCompatActivity
 {
-    private static String WEEKDAYS = "Weekday";
+    private static String WEEKDAYS = "Weekday", SUBJECTS = "Subjects";
 
-    public static Intent getInstance(Context context, WeekDays weekDays){
+    public static Intent getInstance(Context context, WeekDays weekDays, HashMap<String, Subject> subjects){
         Intent intent = new Intent(context, ShowTimeTable.class);
         intent.putExtra(WEEKDAYS, weekDays);
+        intent.putExtra(SUBJECTS, subjects);
         return intent;
     }
 
     private TextView details;
     private WeekDays weekDays;
+    private ArrayList<Subject> subjects;
     public final String TAG = "Kartikeya";
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -32,7 +38,8 @@ public class ShowTimeTable extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_time_table);
         weekDays = (WeekDays) getIntent().getSerializableExtra(WEEKDAYS);
-        String[] days = getResources().getStringArray(R.array.day_of_week);
+        subjects = (ArrayList<Subject>)getIntent().getSerializableExtra(SUBJECTS);
+        String[] days = getResources().getStringArray(R.array.d_of_week);
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         for (String day : days)
             tabLayout.addTab(tabLayout.newTab().setText(day));

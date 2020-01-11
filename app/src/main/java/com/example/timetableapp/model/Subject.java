@@ -4,18 +4,9 @@ package com.example.timetableapp.model;
 import java.io.Serializable;
 
 public class Subject implements Serializable {
-    private String branchYear;
     private String courseName;
     private String professor;
     private String venue;
-
-    public String getBranchYear() {
-        return branchYear;
-    }
-
-    public void setBranchYear(String branchYear) {
-        this.branchYear = branchYear;
-    }
 
     public String getCourseName() {
         return courseName;

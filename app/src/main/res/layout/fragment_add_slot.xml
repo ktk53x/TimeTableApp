@@ -1,63 +1,115 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     xmlns:tools="http://schemas.android.com/tools"
-    android:padding="20dp"
-    android:orientation="vertical"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".fragment.dialogs.AddSlot">
-
-    <!-- TODO: Update blank fragment layout -->
-    <EditText
-        android:id="@+id/slot_start_edit_text"
+    android:background="@android:color/transparent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout
+        android:id="@+id/layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:hint="@string/enter_start_time"
-        tools:layout_editor_absoluteX="16dp" />
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@drawable/cerclebackground"
+        android:paddingTop="90dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:layout_marginTop="110dp"
+        android:layout_centerInParent="true">
+        <TextView
+            android:id="@+id/slot_start_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:ems="10"
+            android:hint="@string/enter_start_time"
+            tools:layout_editor_absoluteX="16dp" />
 
-    <EditText
-        android:id="@+id/slot_end_edit_text"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:ems="10"
-        android:hint="@string/enter_end_time"
-        tools:layout_editor_absoluteX="151dp" />
+        <Spinner
+            android:id="@+id/slot_end_edit_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:hint="@string/enter_end_time"
+            tools:layout_editor_absoluteX="151dp" />
 
-    <Spinner
-        android:id="@+id/day_of_week_spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        tools:layout_editor_absoluteX="8dp" />
+        <Spinner
+            android:id="@+id/day_of_week_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            tools:layout_editor_absoluteX="8dp" />
 
-    <Spinner
-        android:id="@+id/subject_spinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        tools:layout_editor_absoluteX="8dp" />
+        <Spinner
+            android:id="@+id/subject_spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            tools:layout_editor_absoluteX="8dp" />
 
-    <Button
-        android:id="@+id/add_slot_button"
+        <Button
+            android:id="@+id/add_slot_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/add_slot" />
+
+        <Button
+            android:id="@+id/cancel_slot_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:text="@android:string/cancel" />
+
+
+    </LinearLayout>
+    <!--<ImageView-->
+    <!--android:id="@+id/ivAction"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_marginTop="110dp"-->
+    <!--android:layout_centerInParent="true"-->
+    <!--android:background="@drawable/cerclebackground"-->
+    <!--android:focusable="true"-->
+    <!--/>-->
+    <ImageView
+        android:id="@+id/ivLogo"
+        android:src="@drawable/circle_cropped"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="@string/add_slot" />
+        android:layout_centerHorizontal="true"
+        android:focusable="true"
+        android:layout_marginTop="0dp"
+        />
 
-    <Button
-        android:id="@+id/cancel_slot_button"
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:id="@+id/action_buttons"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:text="@android:string/cancel" />
+        android:layout_below="@+id/layout"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="-107dp">
 
-</LinearLayout>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:focusable="true"
+            android:src="@drawable/ic_cancel_black_24dp" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:focusable="true"
+            android:src="@drawable/ic_check_circle_black_24dp" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+
+</RelativeLayout>

@@ -27,6 +27,26 @@
         <item>Thursday</item>
         <item>Friday</item>
     </string-array>
+    <string-array name="d_of_week">
+        <item>M</item>
+        <item>T</item>
+        <item>W</item>
+        <item>T</item>
+        <item>F</item>
+    </string-array>
+    <string-array name="time_slot_list">
+        <item>08:00 AM</item>
+        <item>09:00 AM</item>
+        <item>10:00 AM</item>
+        <item>11:00 AM</item>
+        <item>12:00 AM</item>
+        <item>13:00 PM</item>
+        <item>14:00 PM</item>
+        <item>15:00 PM</item>
+        <item>16:00 PM</item>
+        <item>17:00 PM</item>
+        <item>18:00 PM</item>
+    </string-array>
 
 
     <!-- TODO: Remove or change this placeholder text -->

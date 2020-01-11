@@ -5,11 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 
-import com.example.timetableapp.fragment.Friday;
-import com.example.timetableapp.fragment.Monday;
-import com.example.timetableapp.fragment.Thursday;
-import com.example.timetableapp.fragment.Tuesday;
-import com.example.timetableapp.fragment.Wednesday;
+import com.example.timetableapp.fragment.Weekday;
 import com.example.timetableapp.model.WeekDays;
 
 public class PageAdapter extends FragmentStatePagerAdapter
@@ -29,17 +25,17 @@ public class PageAdapter extends FragmentStatePagerAdapter
         switch (i)
         {
             case 0:
-                return new Monday(weekDays.getWeekdaySubjectSlot("Monday"));
+                return new Weekday(weekDays.getWeekdaySubjectSlot("Monday"));
             case 1:
-                return new Tuesday(weekDays.getWeekdaySubjectSlot("Tuesday"));
+                return new Weekday(weekDays.getWeekdaySubjectSlot("Tuesday"));
             case 2:
-                return new Wednesday(weekDays.getWeekdaySubjectSlot("Wednesday"));
+                return new Weekday(weekDays.getWeekdaySubjectSlot("Wednesday"));
             case 3:
-                return new Thursday(weekDays.getWeekdaySubjectSlot("Thursday"));
+                return new Weekday(weekDays.getWeekdaySubjectSlot("Thursday"));
             case 4:
-                return new Friday(weekDays.getWeekdaySubjectSlot("Friday"));
+                return new Weekday(weekDays.getWeekdaySubjectSlot("Friday"));
             default:
-                return new Monday(weekDays.getWeekdaySubjectSlot("Monday"));
+                return new Weekday(weekDays.getWeekdaySubjectSlot("Monday"));
         }
     }
 

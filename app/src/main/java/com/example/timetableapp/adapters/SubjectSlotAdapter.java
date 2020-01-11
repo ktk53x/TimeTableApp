@@ -43,19 +43,17 @@ public class SubjectSlotAdapter extends RecyclerView.Adapter<SubjectSlotAdapter.
 
     class ViewHolder extends RecyclerView.ViewHolder
     {
-        private TextView slot_start, slot_end, subject;
+        private TextView slot_start,subject;
         ViewHolder(@NonNull View itemView)
         {
             super(itemView);
             subject = itemView.findViewById(R.id.subject);
-            slot_end = itemView.findViewById(R.id.to_time);
             slot_start = itemView.findViewById(R.id.from_time);
         }
 
         void bindTo(SubjectSlot slot)
         {
             subject.setText(slot.getSubject());
-            slot_end.setText(slot.getSlotEnd());
             slot_start.setText(slot.getSlotStart());
         }
     }
