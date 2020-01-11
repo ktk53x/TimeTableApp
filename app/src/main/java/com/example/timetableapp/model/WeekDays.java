@@ -16,10 +16,11 @@ public class WeekDays implements Serializable {
     //          0: CS101
     //          1: Break
     //Tuesday...
+
     public WeekDays(){
-        ArrayList<String> temp = new ArrayList<>(10);
+        ArrayList<String> temp = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            temp.set(i,"Break");
+            temp.add("Break");
         }
         weekDayHashMap.put("Monday", new WeekDay(temp));
         weekDayHashMap.put("Tuesday", new WeekDay(temp));
@@ -60,7 +61,7 @@ public class WeekDays implements Serializable {
     }
 
     public class WeekDay implements Serializable {
-        private ArrayList<String> subjectSlots = new ArrayList<>();
+        private ArrayList<String> subjectSlots;
 
         public WeekDay(ArrayList<String> subjectSlots) {
             this.subjectSlots = subjectSlots;

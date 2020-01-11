@@ -35,8 +35,9 @@ public class MainActivity extends AppCompatActivity
     private TextView hello_world;
     public final String TAG = "Kartikeya";
     HashMap<String, Integer> details;
-    HashMap<String, Subject> subjects;
+    HashMap<String, Subject> subjects = new HashMap<>();
     BTech bTech = new BTech();
+    String yearBranch;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     String branchYear;
     @Override
@@ -56,10 +57,10 @@ public class MainActivity extends AppCompatActivity
 
     public void AddSlotDialogBox(View view)
     {
-        AddSlot s = new AddSlot(0,MainActivity.this);
-        s.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        s.show();
+//        AddSlot s = new AddSlot(0,MainActivity.this);
+//        s.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//
+//        s.show();
     }
 
     public void ViewTimeTable(View view)
@@ -89,12 +90,12 @@ public class MainActivity extends AppCompatActivity
         if(details.get("branch") != null)
             branch = branches.get(details.get("branch"));
 
-        branchYear = year + " " + branch;
-        getSubjects(branchYear);
+        yearBranch = year + " " + branch;
+        getSubjects();
 
 
     }
-    public void getSubjects(final String yearBranch)
+    public void getSubjects()
     {
         db
                 .collection("timetable")
@@ -161,8 +162,60 @@ public class MainActivity extends AppCompatActivity
 
     public void EditTimeTable(View view)
     {
-        Intent intent = new Intent(getBaseContext(), EditTimeTableActivity.class);
-        startActivity(intent);
+        HashMap<Integer, String> btech_des = new HashMap<>();
+        HashMap<Integer, String> branches = new HashMap<>();
+        btech_des.put(1, "BTech");
+        btech_des.put(2, "BDes");
+        branches.put(1, "CSE");
+        branches.put(2, "ECE");
+        branches.put(3, "ME");
+        branches.put(4, "CE");
+        branches.put(6, "BT");
+        branches.put(7, "CL");
+        branches.put(8, "EEE");
+        branches.put(21, "EP");
+        branches.put(22, "CST");
+        branches.put(23, "MC");
+        details = TimeTableUtilities.roll_number_parser(roll_number.getText().toString());
+        String year = "None", course_type = "None", branch = "None";
+        if(details.get("year") != null)
+            year = Objects.requireNonNull(details.get("year")).toString();
+        if(details.get("course_type") != null)
+            course_type = btech_des.get(details.get("course_type"));
+        if(details.get("branch") != null)
+            branch = branches.get(details.get("branch"));
+
+        yearBranch = year + " " + branch;
+        yearBranch = "1CSE";
+        //TODO: yearBranch
+        db
+                .collection("timetable")
+                .document("BTech")
+                .collection(yearBranch)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task)
+                    {
+                        if(task.isSuccessful())
+                        {
+                            for(QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult()))
+                            {
+                                Subject temp = document.toObject(Subject.class);
+                                subjects.put(temp.getCourseName(),temp);
+                            }
+                            Intent intent = new Intent(getBaseContext(), EditTimeTableActivity.class);
+                            intent.putExtra("Subject", subjects);
+                            startActivity(intent);
+                        }
+                        else
+                        {
+                            //TODO: exception handling
+                        }
+
+                    }
+                });
+
 
     }
 }

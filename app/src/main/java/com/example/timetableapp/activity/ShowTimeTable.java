@@ -30,7 +30,7 @@ public class ShowTimeTable extends AppCompatActivity
 
     private TextView details;
     private WeekDays weekDays;
-    private ArrayList<Subject> subjects;
+    private HashMap<String,Subject> subjects;
     public final String TAG = "Kartikeya";
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -38,7 +38,7 @@ public class ShowTimeTable extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_show_time_table);
         weekDays = (WeekDays) getIntent().getSerializableExtra(WEEKDAYS);
-        subjects = (ArrayList<Subject>)getIntent().getSerializableExtra(SUBJECTS);
+        subjects = (HashMap<String, Subject>)getIntent().getSerializableExtra(SUBJECTS);
         String[] days = getResources().getStringArray(R.array.d_of_week);
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         for (String day : days)
@@ -46,7 +46,7 @@ public class ShowTimeTable extends AppCompatActivity
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         final ViewPager viewPager = findViewById(R.id.view_pager);
-        PageAdapter adapter = new PageAdapter(getSupportFragmentManager(), tabLayout.getTabCount(), weekDays);
+        PageAdapter adapter = new PageAdapter(getSupportFragmentManager(), tabLayout.getTabCount(), weekDays,this);
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {

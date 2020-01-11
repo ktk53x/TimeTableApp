@@ -20,27 +20,31 @@ import com.example.timetableapp.activity.MainActivity;
 import com.example.timetableapp.fragment.dialogs.AddSlot;
 import com.example.timetableapp.fragment.dialogs.AddSubject;
 import com.example.timetableapp.model.DaySlot;
+import com.example.timetableapp.model.Subject;
 import com.example.timetableapp.model.SubjectSlot;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class DaySlotAdapter extends RecyclerView.Adapter<DaySlotAdapter.ViewHolder>
 {
     private ArrayList<DaySlot> slots;
     private Context context;
     private Activity activity;
-    private send_data portal;
+    private HashMap<String, Subject> subjects;
+//    private send_data portal;
 
-    public DaySlotAdapter(Context context, ArrayList<DaySlot> slots, Activity activity)
+    public DaySlotAdapter(Context context, ArrayList<DaySlot> slots, Activity activity, HashMap<String, Subject> subjects)
     {
         this.context = context;
         this.slots = slots;
         this.activity = activity;
+        this.subjects = subjects;
 //        this.portal = portal;
     }
     void AddSlotDialog(View view, int position)
     {
-        AddSlot s = new AddSlot(position,activity);
+        AddSlot s = new AddSlot(position,activity, subjects);
         s.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         s.show();
@@ -55,7 +59,7 @@ public class DaySlotAdapter extends RecyclerView.Adapter<DaySlotAdapter.ViewHold
     public void onBindViewHolder(@NonNull final DaySlotAdapter.ViewHolder holder, int position) {
         String slot = slots.get(position).getStart_time();
         ImageView status = slots.get(position).getStatus();
-        holder.bindTo(slot, status, portal);
+        holder.bindTo(slot, status);
 
     }
 
@@ -78,10 +82,10 @@ public class DaySlotAdapter extends RecyclerView.Adapter<DaySlotAdapter.ViewHold
             itemView.setOnClickListener(this);
         }
 
-        void bindTo(String slot, ImageView status, final send_data portal)
+        void bindTo(String slot, ImageView status)
         {
             time_slot.setText(slot);
-            add_button.setImageResource(R.drawable.ic_add_circle_black_24dp);
+//            add_button.setImageResource(R.drawable.ic_add_circle_black_24dp);
         }
 
 
@@ -89,7 +93,7 @@ public class DaySlotAdapter extends RecyclerView.Adapter<DaySlotAdapter.ViewHold
         public void onClick(View view) {
             int position = getLayoutPosition();
             AddSlotDialog(view,position);
-            portal.send(position);
+//            portal.send(position);
         }
     }
 }

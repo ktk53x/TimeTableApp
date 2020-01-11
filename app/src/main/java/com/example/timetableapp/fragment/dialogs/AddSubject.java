@@ -61,16 +61,16 @@ public class AddSubject extends Dialog implements android.view.View.OnClickListe
         branch_spinner.setAdapter(adapter);
         btech_des.put(1, "BTech");
         btech_des.put(2, "BDes");
-        branches.put(1, "Computer Science And Engineering");
-        branches.put(2, "Electronics And Communication Engineering");
-        branches.put(3, "Mechanical Engineering");
-        branches.put(4, "Civil Engineering");
-        branches.put(6, "Bio Technology");
-        branches.put(7, "Chemical Engineering");
-        branches.put(8, "Electrical Engineering");
-        branches.put(21, "Engineering Physics");
-        branches.put(22, "Chemical Science And Technology");
-        branches.put(23, "Mathematics And Computing");
+        branches.put(1, "CSE");
+        branches.put(2, "ECE");
+        branches.put(3, "ME");
+        branches.put(4, "CE");
+        branches.put(6, "BT");
+        branches.put(7, "CL");
+        branches.put(8, "EEE");
+        branches.put(21, "EP");
+        branches.put(22, "CST");
+        branches.put(23, "MC");
         add_subject.setOnClickListener(this);
         cancel.setOnClickListener(this);
 
@@ -97,12 +97,8 @@ public class AddSubject extends Dialog implements android.view.View.OnClickListe
     private void AddSubjectToDatabase()
     {
         String subject_code = subject.getText().toString(), subject_venue = venue.getText().toString();
-        String subject_professor = professor.getText().toString(), subject_branch_year = branch_spinner.getSelectedItem().toString() + " " + year.getText().toString();
-        Subject subject = new Subject();
-        subject.setBranchYear(subject_branch_year);
-        subject.setCourseName(subject_code);
-        subject.setProfessor(subject_professor);
-        subject.setVenue(subject_venue);
-        db.collection("timetable").document("BTech").collection("Subject").document(subject_code).set(subject);
+        String subject_professor = professor.getText().toString(), year_branch = year.getText().toString() + branch_spinner.getSelectedItem().toString();
+        Subject subject = new Subject(subject_code,subject_professor,subject_venue);
+        db.collection("timetable").document("BTech").collection(year_branch).document(subject_code).set(subject);
     }
 }

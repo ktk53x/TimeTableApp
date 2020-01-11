@@ -22,7 +22,13 @@
             android:layout_marginTop="8dp"
             android:ems="10"
             android:hint="@string/enter_start_time"
-            tools:layout_editor_absoluteX="16dp" />
+            tools:layout_editor_absoluteX="16dp"
+            android:padding="15dp"/>
+        <EditText
+            android:id="@+id/yearBranch"
+            android:layout_width="match_parent"
+            android:hint="YearBranch"
+            android:layout_height="wrap_content" />
 
         <Spinner
             android:id="@+id/slot_end_edit_text"

@@ -7,6 +7,7 @@ public class DaySlot
     private String start_time;
     private ImageView status;
 
+    public DaySlot(){}
     public DaySlot(String start_time, ImageView status) {
         this.start_time = start_time;
         this.status = status;

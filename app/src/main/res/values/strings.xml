@@ -8,16 +8,16 @@
     <string name="enter_venue">Enter Venue</string>
     <string name="professor_s_name">Professor\'s Name</string>
     <string-array name="branch_array">
-        <item>Computer Science And Engineering</item>
-        <item>Electronics And Communication Engineering</item>
-        <item>Mechanical Engineering</item>
-        <item>Civil Engineering</item>
-        <item>Bio Technology</item>
-        <item>Chemical Engineering</item>
-        <item>Electrical Engineering</item>
-        <item>Engineering Physics</item>
-        <item>Chemical Science And Technology</item>
-        <item>Mathematics And Computing</item>
+        <item>CSE</item>
+        <item>ECE</item>
+        <item>ME</item>
+        <item>CE</item>
+        <item>BT</item>
+        <item>CL</item>
+        <item>EEE</item>
+        <item>EP</item>
+        <item>CST</item>
+        <item>MC</item>
     </string-array>
     <string-array name="subject_array"></string-array>
     <string-array name="day_of_week">

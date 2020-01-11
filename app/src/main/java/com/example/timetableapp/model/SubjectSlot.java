@@ -13,6 +13,14 @@ public class SubjectSlot implements Serializable{
     private String slotStart;
     private String subject;
 
+    public SubjectSlot(){}
+    public SubjectSlot(String dayOfWeek, String slotEnd, String slotStart, String subject) {
+        this.dayOfWeek = dayOfWeek;
+        this.slotEnd = slotEnd;
+        this.slotStart = slotStart;
+        this.subject = subject;
+    }
+
     public String getDayOfWeek() {
         return dayOfWeek;
     }

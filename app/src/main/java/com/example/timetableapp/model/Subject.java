@@ -8,6 +8,13 @@ public class Subject implements Serializable {
     private String professor;
     private String venue;
 
+    public Subject(){}
+    public Subject(String courseName, String professor, String venue) {
+        this.courseName = courseName;
+        this.professor = professor;
+        this.venue = venue;
+    }
+
     public String getCourseName() {
         return courseName;
     }
