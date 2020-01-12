@@ -44,7 +44,7 @@ public class PageAdapter extends FragmentStatePagerAdapter
         try {
 
             ArrayList<String> time_slots = new ArrayList<>(Arrays.asList(context.getResources().getStringArray(R.array.time_slot_list)));
-            ArrayList<String> slots = weekDays.getWeekdaySubjectSlot(day).getSubjectSlots();
+            ArrayList<String> slots = weekDays.getWeekdaySubjectSlot(day);
             SubjectSlot temp;
             int end = 0;
             for (int i = 0; i < 10; i++) {

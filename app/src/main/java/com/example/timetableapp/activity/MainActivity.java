@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity
     BTech bTech = new BTech();
     String yearBranch;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
-    String branchYear;
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -90,7 +89,7 @@ public class MainActivity extends AppCompatActivity
         if(details.get("branch") != null)
             branch = branches.get(details.get("branch"));
 
-        yearBranch = year + " " + branch;
+        yearBranch = year + branch;
         getSubjects();
 
 
@@ -128,7 +127,7 @@ public class MainActivity extends AppCompatActivity
         db
                 .collection("timetable")
                 .document("BTech")
-                .collection(branchYear + "Slots")
+                .collection(yearBranch + "SLOTS")
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -206,6 +205,7 @@ public class MainActivity extends AppCompatActivity
                             }
                             Intent intent = new Intent(getBaseContext(), EditTimeTableActivity.class);
                             intent.putExtra("Subject", subjects);
+                            intent.putExtra("yearBranch", yearBranch);
                             startActivity(intent);
                         }
                         else

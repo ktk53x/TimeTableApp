@@ -3,6 +3,7 @@ package com.example.timetableapp.fragment.dialogs;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,8 +18,10 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.example.timetableapp.EditTimeTableActivity;
 import com.example.timetableapp.Interfaces.send_data;
 import com.example.timetableapp.R;
+import com.example.timetableapp.model.DaySlot;
 import com.example.timetableapp.model.Subject;
 import com.example.timetableapp.model.SubjectSlot;
 import com.example.timetableapp.model.WeekDays;
@@ -53,17 +56,20 @@ public class AddSlot extends Dialog implements android.view.View.OnClickListener
     private ArrayAdapter<String> adapter;
     private ArrayAdapter<String> end_time_adapter;
     HashMap<String, Subject> subjectHashMap;
+    private ArrayList<DaySlot> updatedTime;
     String yearBranch;
     WeekDays weekDays;
 
 
 
-    public AddSlot(int position, Activity activity, HashMap<String, Subject> subjects)
+    public AddSlot(int position, Activity activity, HashMap<String, Subject> subjects, String yearBranch, ArrayList<DaySlot> slots )
     {
         super(activity);
         this.activity = activity;
         this.position = position;
         this.subjectHashMap = subjects;
+        this.yearBranch = yearBranch;
+        this.updatedTime = slots;
     }
 
     @Override
@@ -83,8 +89,11 @@ public class AddSlot extends Dialog implements android.view.View.OnClickListener
 
             weekDays = new WeekDays();
 
-            yearBranch = year_branch.getText().toString().trim();
-            ArrayList<String> slots = new ArrayList<String>(Arrays.asList(getContext().getResources().getStringArray(R.array.time_slot_list)));
+            //yearBranch = year_branch.getText().toString().trim();
+            ArrayList<String> slots = new ArrayList<>();
+            for (int i = 0; i < updatedTime.size(); i++) {
+                slots.add(updatedTime.get(i).getStart_time());
+            }
 
             ArrayList<String> subjectList = new ArrayList<>();
             for (Map.Entry mapElement : subjectHashMap.entrySet()) {
@@ -108,7 +117,6 @@ public class AddSlot extends Dialog implements android.view.View.OnClickListener
             ArrayAdapter<String> adapter_2 = new ArrayAdapter<>(activity,android.R.layout.simple_spinner_item,days);
             adapter_2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             day_of_week.setAdapter(adapter_2);
-            weekDays.addWeekdaySubjectSlot(day_of_week.getSelectedItem().toString(),slot_start.getText().toString(),slot_end.getSelectedItem().toString(),subject_spinner.getSelectedItem().toString());
             //TODO: get arraylist from database
 
             add_slot.setOnClickListener(this);
@@ -140,6 +148,41 @@ public class AddSlot extends Dialog implements android.view.View.OnClickListener
     }
     private void AddSlotToDatabase()
     {
-        db.collection("timetable").document("BTech").collection(yearBranch+"SLOTS").add(weekDays.getWeekdaySubjectSlot(day_of_week.getSelectedItem().toString()));
+        try{
+            db
+                    .collection("timetable")
+                    .document("BTech")
+                    .collection(yearBranch + "SLOTS")
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task)
+                        {
+                            if(task.isSuccessful())
+                            {
+                                WeekDays weekDays = new WeekDays();
+                                for(QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult()))
+                                {
+
+                                    weekDays = document.toObject(WeekDays.class);
+                                }
+//                            Log.d("slots",weekDays.toString());
+                                weekDays.addWeekdaySubjectSlot(day_of_week.getSelectedItem().toString(),slot_start.getText().toString(),slot_end.getSelectedItem().toString(),subject_spinner.getSelectedItem().toString());
+//                            Log.d("slots",weekDays.toString());
+                                db.collection("timetable").document("BTech").collection(yearBranch+"SLOTS").document("map").set(weekDays);
+                            }
+                            else
+                            {
+                                //TODO: exception handling
+                            }
+
+                        }
+                    });
+        }catch (Exception e)
+        {
+            Log.d("addslot",e.toString());
+        }
+
+
     }
 }

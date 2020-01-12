@@ -27,6 +27,14 @@
         <item>Thursday</item>
         <item>Friday</item>
     </string-array>
+    <string-array name="day_ids">
+        <item>mon_slots</item>
+        <item>tue_slots</item>
+        <item>wed_slots</item>
+        <item>thu_slots</item>
+        <item>fri_slots</item>
+
+    </string-array>
     <string-array name="d_of_week">
         <item>M</item>
         <item>T</item>
