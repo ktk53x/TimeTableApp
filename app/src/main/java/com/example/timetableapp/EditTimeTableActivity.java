@@ -3,12 +3,14 @@ package com.example.timetableapp;
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -51,6 +53,11 @@ public class EditTimeTableActivity extends AppCompatActivity{
         try {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_edit_time_table);
+
+            Toolbar toolbar = findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+
+
             final ArrayList<RecyclerView> recyclerViews = new ArrayList<>();
             ArrayList<String> ids  = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.day_ids)));
             for(String id : ids) {
@@ -81,9 +88,11 @@ public class EditTimeTableActivity extends AppCompatActivity{
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task)
                         {
-                            if(task.isSuccessful()) {
+                            if(task.isSuccessful())
+                            {
                                 WeekDays weekDays = new WeekDays();
-                                for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                                for (QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult()))
+                                {
                                     weekDays = document.toObject(weekDays.getClass());
 
                                 }
@@ -91,34 +100,61 @@ public class EditTimeTableActivity extends AppCompatActivity{
 
                                 ArrayList<String> time_slots = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.time_slot_list)));
                                 ArrayList<String> days = new ArrayList<>(Arrays.asList(getResources().getStringArray(R.array.day_of_week)));
+
+
 //                                for(String day : days)
-                                for (int j = 0; j < recyclerViews.size(); j++) {
+                                for (int j = 0; j < recyclerViews.size(); j++)
+                                {
                                     ArrayList<SubjectSlot> ans = new ArrayList<>();
                                     ArrayList<String> slots = weekDays.getWeekdaySubjectSlot(days.get(j));
-                                    SubjectSlot temp;
                                     int end = 0;
-                                    for (int i = 0; i>=0 && i < 10; i++) {
-                                        while (end >=0 && end < 10 && !(slots.get(i).equals("Break")) && slots.get(i).equals(slots.get(end))) {
-                                            end++;
+                                    for (int i = 0; i>=0 && i < slots.size(); i++)
+                                    {
+                                        if(!slots.get(i).equals("Break")) {
+                                            while (end >= 0 && end < slots.size() && slots.get(i).equals(slots.get(end))) {
+                                                end++;
+                                            }
                                         }
-                                        ans.add(new SubjectSlot(days.get(j), time_slots.get(max(end - 1, i)), time_slots.get(i), slots.get(i)));
+                                        else
+                                        {
+                                            end = i + 1;
+                                        }
+                                        ans.add(new SubjectSlot(days.get(j), time_slots.get(max(end , i)), time_slots.get(i), slots.get(i)));
                                         i = max(end - 1,i);
                                     }
                                     fin.set(j, ans);
                                 }
-                                for (int j = 0; j < recyclerViews.size(); j++) {
+                                for (int j = 0; j < recyclerViews.size(); j++)
+                                {
+                                    ArrayList<String> slots = new ArrayList<>();
                                     ArrayList<String> slot_time = new ArrayList<>();
                                     for (SubjectSlot time : fin.get(j)) {
                                         slot_time.add(time.getSlotStart());
+                                        slots.add(time.getSubject());
                                     }
-                                    final ArrayList<DaySlot> slots = new ArrayList<>();
+                                    final ArrayList<DaySlot> photo_slots = new ArrayList<>();
                                     for (int i = 0; i < slot_time.size(); i++) {
                                         TextView temp = new TextView(getApplicationContext());
-                                        temp.setBackground(getResources().getDrawable(R.drawable.ic_add_circle_black_24dp));
-                                        slots.add(new DaySlot(slot_time.get(i), temp));
+                                        Log.d("Break",Integer.toString(i) + " " + slots.get(i));
+                                        if(slots.get(i).equals("Break"))
+                                        {
+                                            temp.setBackground(getResources().getDrawable(R.drawable.ic_add_circle_black_24dp));
+                                            temp.setEnabled(true);
+
+                                        }
+                                        else{
+                                            temp.setBackground(getResources().getDrawable(R.drawable.cerclebackground));
+                                            temp.setEnabled(false);
+                                            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(100,60);
+                                            temp.setLayoutParams(layoutParams);
+                                            temp.setPadding(70,5,70,5);
+//                                            temp.setWidth(Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 100, getResources().getDisplayMetrics())));
+                                            temp.setText(slots.get(i));
+                                        }
+                                        photo_slots.add(new DaySlot(slot_time.get(i), temp));
 
                                     }
-                                    DaySlotAdapter adapter = new DaySlotAdapter(getApplicationContext(), slots, EditTimeTableActivity.this, subjects, yearBranch);
+                                    DaySlotAdapter adapter = new DaySlotAdapter(getApplicationContext(), photo_slots, EditTimeTableActivity.this, subjects, yearBranch,slots);
                                     recyclerViews.get(j).setAdapter(adapter);
                                 }
                             }

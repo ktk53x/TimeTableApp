@@ -2,8 +2,10 @@ package com.example.timetableapp.adapters;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.timetableapp.EditTimeTableActivity;
 import com.example.timetableapp.Interfaces.send_data;
 import com.example.timetableapp.R;
 import com.example.timetableapp.activity.MainActivity;
@@ -33,9 +36,10 @@ public class DaySlotAdapter extends RecyclerView.Adapter<DaySlotAdapter.ViewHold
     private Activity activity;
     private HashMap<String, Subject> subjects;
     private String yearBranch;
+    ArrayList<String> breakOrNot;
 //    private send_data portal;
 
-    public DaySlotAdapter(Context context, ArrayList<DaySlot> slots, Activity activity, HashMap<String, Subject> subjects, String yearBranch)
+    public DaySlotAdapter(Context context, ArrayList<DaySlot> slots, Activity activity, HashMap<String, Subject> subjects, String yearBranch, ArrayList<String> breakOrNot)
     {
         this.context = context;
         this.slots = slots;
@@ -43,10 +47,11 @@ public class DaySlotAdapter extends RecyclerView.Adapter<DaySlotAdapter.ViewHold
         this.subjects = subjects;
 //        this.portal = portal;
         this.yearBranch = yearBranch;
+        this.breakOrNot = breakOrNot;
     }
     void AddSlotDialog(View view, int position, String yearBranch)
     {
-        AddSlot s = new AddSlot(position,activity, subjects, yearBranch, slots);
+        AddSlot s = new AddSlot(position,activity, subjects, yearBranch, slots, context, breakOrNot);
         s.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         s.show();
@@ -61,7 +66,9 @@ public class DaySlotAdapter extends RecyclerView.Adapter<DaySlotAdapter.ViewHold
     public void onBindViewHolder(@NonNull final DaySlotAdapter.ViewHolder holder, int position) {
         String slot = slots.get(position).getStart_time();
         TextView status = slots.get(position).getStatus();
-        holder.bindTo(slot, status);
+        String text = status.getText().toString();
+        Drawable image = status.getBackground();
+        holder.bindTo(slot, text, image);
 
     }
 
@@ -79,23 +86,38 @@ public class DaySlotAdapter extends RecyclerView.Adapter<DaySlotAdapter.ViewHold
         {
             super(itemView);
             time_slot = itemView.findViewById(R.id.slot_time);
-            add_button = itemView.findViewById(R.id.add_slot_button);
+            add_button = itemView.findViewById(R.id.add_button);
             this.adapter = adapter;
             itemView.setOnClickListener(this);
         }
 
-        void bindTo(String slot, TextView status)
+        void bindTo(String slot, String text, Drawable image)
         {
             time_slot.setText(slot);
-//            add_button.setImageResource(R.drawable.ic_add_circle_black_24dp);
+            add_button.setText(text);
+            add_button.setBackground(image);
+
+            String curBreak = breakOrNot.get(getAdapterPosition());
+            if(curBreak.equals("Break"))
+            {
+                add_button.setMinHeight(120);
+                add_button.setMinWidth(100);
+
+            }else{
+                add_button.setPadding(70, 15, 70, 15);
+
+            }
         }
 
 
         @Override
         public void onClick(View view) {
             int position = getLayoutPosition();
-            AddSlotDialog(view,position, yearBranch);
-//            portal.send(position);
+            String curBreak = breakOrNot.get(position);
+            if(curBreak.equals("Break"))
+            {
+                AddSlotDialog(view,position, yearBranch);
+            }
         }
     }
 }
