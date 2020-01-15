@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".EditTimeTableActivity"></activity>
+        <activity android:name=".activity.Add_Subject"></activity>
+        <activity android:name=".EditTimeTableActivity" />
         <activity android:name=".activity.ShowTimeTable" />
         <activity android:name=".activity.MainActivity">
             <intent-filter>

@@ -1,35 +1,25 @@
-package com.example.timetableapp.fragment.dialogs;
+package com.example.timetableapp.activity;
 
-
+import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
-import android.app.Dialog;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.View;
 import android.view.Window;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
 
 import com.example.timetableapp.R;
-import com.example.timetableapp.model.BTech;
 import com.example.timetableapp.model.Subject;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 
 
-/**
- * A simple {@link Fragment} subclass.
- */
-public class AddSubject extends Dialog implements android.view.View.OnClickListener
-{
 
-    private Activity activity;
+public class Add_Subject extends AppCompatActivity implements android.view.View.OnClickListener{
+
     private ImageView add_subject, cancel;
     private EditText subject, venue, professor, year;
     private Spinner branch_spinner;
@@ -37,12 +27,6 @@ public class AddSubject extends Dialog implements android.view.View.OnClickListe
 
     HashMap<Integer, String> btech_des = new HashMap<>();
     HashMap<Integer, String> branches = new HashMap<>();
-
-    public AddSubject(Activity activity)
-    {
-        super(activity);
-        this.activity = activity;
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -57,7 +41,7 @@ public class AddSubject extends Dialog implements android.view.View.OnClickListe
         professor = findViewById(R.id.professor_edit_text);
         year = findViewById(R.id.year_edit_text);
         branch_spinner = findViewById(R.id.spinner);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(activity,R.array.branch_array, android.R.layout.simple_spinner_item);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,R.array.branch_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         branch_spinner.setAdapter(adapter);
         btech_des.put(1, "BTech");
@@ -85,15 +69,15 @@ public class AddSubject extends Dialog implements android.view.View.OnClickListe
         {
             case R.id.add_subject_button:
                 AddSubjectToDatabase();
-                dismiss();
+//                dismiss();
                 break;
             case R.id.cancel_button:
-                dismiss();
+//                dismiss();
                 break;
             default:
                 break;
         }
-        dismiss();
+//        dismiss();
     }
     private void AddSubjectToDatabase()
     {
@@ -103,3 +87,4 @@ public class AddSubject extends Dialog implements android.view.View.OnClickListe
         db.collection("timetable").document("BTech").collection(year_branch).document(subject_code).set(subject);
     }
 }
+

@@ -50,8 +50,10 @@ public class MainActivity extends AppCompatActivity
 
     public void AddSubjectDialogBox(View view)
     {
-        AddSubject s = new AddSubject(MainActivity.this);
-        s.show();
+//        AddSubject s = new AddSubject(MainActivity.this);
+//        s.show();
+        Intent intent = new Intent(this, Add_Subject.class);
+        startActivity(intent);
     }
 
     public void AddSlotDialogBox(View view)
@@ -210,6 +212,7 @@ public class MainActivity extends AppCompatActivity
                         }
                         else
                         {
+                            //TODO: exception handling
                             //TODO: exception handling
                         }
 

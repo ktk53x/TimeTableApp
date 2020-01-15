@@ -122,12 +122,14 @@ public class AddSlot extends Dialog implements android.view.View.OnClickListener
                     break;
                 }
             }
+            slot_start.setText(slots.get(position));
             ArrayList<String> endslots = position == slots.size() ? new ArrayList<String>() : new ArrayList<String>(slots.subList(position + 1, Math.min(end + 1,slots.size())));
-//
+            if(endslots.isEmpty()) endslots.add(Integer.toString(Integer.parseInt(slots.get(position).substring(0,2)) + 1) + ":00 PM");
+            //TODO : remove PM from everything
             end_time_adapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item,endslots);
             end_time_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             slot_end.setAdapter(end_time_adapter);
-            slot_start.setText(slots.get(position));
+
 
 //            ArrayList<String> days = new ArrayList<>(Arrays.asList(getContext().getResources().getStringArray(R.array.day_of_week)));
 //            ArrayAdapter<String> adapter_2 = new ArrayAdapter<>(activity,android.R.layout.simple_spinner_item,days);

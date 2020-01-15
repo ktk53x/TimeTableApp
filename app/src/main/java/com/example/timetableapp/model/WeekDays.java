@@ -44,7 +44,7 @@ public class WeekDays implements Serializable {
         int start, end;
         start = Integer.parseInt(start_time.substring(0, 2));
         end = Integer.parseInt(end_time.substring(0, 2));
-        for(int i = start-8; i < end-8; i++)
+        for(int i = start-8; i < Math.min(end-8,10); i++)
             Objects.requireNonNull(weekDayHashMap.get(weekday)).set(i,subject_code);
 
     }
