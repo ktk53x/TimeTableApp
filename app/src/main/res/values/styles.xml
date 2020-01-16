@@ -8,4 +8,18 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="input_ui">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">14dp</item>
+        <item name="android:textSize">10dp</item>
+    </style>
+
+    <style name="editText_ui">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingTop">3dp</item>
+        <item name="android:paddingBottom">8dp</item>
+    </style>
+
 </resources>

@@ -5,7 +5,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.dialogs.AddSubject">
+    tools:context=".activity.Add_Subject">
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
@@ -64,7 +64,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="8dp"
                 app:layout_constraintBottom_toTopOf="@+id/add_slot_button"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -78,6 +77,7 @@
                     android:background="@drawable/round_button_bg"
                     android:drawableLeft="@drawable/ic_keyboard_arrow_right_black_24dp"
                     android:paddingLeft="8dp"
+                    android:layout_margin="8dp"
                     android:paddingRight="8dp"
                     android:text="TIMING"
                     android:textColor="#808080"
@@ -90,6 +90,7 @@
                     android:layout_height="wrap_content"
                     android:text="SUBJECT"
                     android:textAlignment="center"
+                    android:layout_margin="8dp"
                     android:layout_marginBottom="15dp"
                     android:textColor="#202020"
                     android:textSize="16sp" />
@@ -98,7 +99,8 @@
                     android:id="@+id/subjects_listView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:textAlignment="center" />
+                    android:layout_gravity="center"
+                     />
             </LinearLayout>
 
             <ImageView
@@ -140,18 +142,18 @@
                         app:layout_constraintTop_toTopOf="parent">
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="Course Code" />
+                            android:text="Course Code"
+                            style="@style/input_ui" />
 
                         <EditText
-                            android:id="@+id/add_subject_edit_text"
                             android:layout_width="100dp"
                             android:layout_height="wrap_content"
-                            android:ems="10"
-                            android:inputType="textPersonName"
-                            tools:layout_editor_absoluteX="16dp" />
+                            android:paddingTop="3dp"
+                            android:maxLength="6"
+                            android:paddingBottom="8dp"
+                            android:id="@+id/add_subject_edit_text"
+                            tools:layout_editor_absoluteX="16dp"
+                             />
                     </LinearLayout>
 
                     <RadioGroup
@@ -166,9 +168,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="end"
+                            android:checked="true"
                             android:layoutDirection="rtl"
+                            android:id="@+id/engg"
                             android:text="Engineering"
-                            android:textColor="#404040"
+                            android:textColor="#808080"
                             android:textSize="12sp" />
 
                         <RadioButton
@@ -177,50 +181,30 @@
                             android:layout_gravity="end"
                             android:layoutDirection="rtl"
                             android:text="HSS"
-                            android:textColor="#404040"
+                            android:id="@+id/hss"
+                            android:textColor="#808080"
                             android:textSize="12sp" />
                     </RadioGroup>
                 </androidx.constraintlayout.widget.ConstraintLayout>
-
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:text="Branch"
-                    android:layout_height="wrap_content"/>
-                <Spinner
-                    android:id="@+id/spinner"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    tools:layout_editor_absoluteX="8dp" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Year"/>
+                    android:text="Course Name"
+                    style="@style/input_ui" />
                 <EditText
-                    android:id="@+id/year_edit_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="number"
+                    android:id="@+id/course_name_edit_text"
+                    style="@style/editText_ui"
+
                     tools:layout_editor_absoluteX="151dp" />
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Location"/>
+                    android:text="Location"
+                    style="@style/input_ui" />
                 <EditText
                     android:id="@+id/venue_edit_text"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
+                    style="@style/editText_ui"
                     android:inputType="textPersonName"
                     tools:layout_editor_absoluteX="109dp" />
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Professor"/>
+                    android:text="Professor"
+                    style="@style/input_ui" />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -231,23 +215,43 @@
                         android:layout_height="wrap_content"/>
                     <EditText
                         android:id="@+id/professor_edit_text"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:ems="10"
+                        style="@style/editText_ui"
                         android:inputType="textPersonName"
                         tools:layout_editor_absoluteX="8dp" />
                 </LinearLayout>
+                <CheckBox
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layoutDirection="rtl"
+                    android:id="@+id/lab_course"
+                    android:textColor="#808080"
+                    android:textSize="12sp"
+                    android:layout_marginTop="30dp"
+                    android:text="Lab Course    "/>
             </LinearLayout>
 
             <ImageView
                 android:id="@+id/cancel_button"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
+                android:layout_marginBottom="20dp"
                 android:focusable="true"
                 android:src="@drawable/ic_delete_black_24dp"
-                android:layout_marginBottom="20dp"
                 app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.707"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageView
+                android:id="@+id/refresh_button"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginBottom="20dp"
+                android:focusable="true"
+                android:src="@drawable/ic_refresh_black_24dp"
+                app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
+                app:layout_constraintEnd_toStartOf="@+id/cancel_button"
                 app:layout_constraintStart_toStartOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

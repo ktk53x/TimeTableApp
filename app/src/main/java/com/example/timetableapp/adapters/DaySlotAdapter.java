@@ -21,7 +21,6 @@ import com.example.timetableapp.Interfaces.send_data;
 import com.example.timetableapp.R;
 import com.example.timetableapp.activity.MainActivity;
 import com.example.timetableapp.fragment.dialogs.AddSlot;
-import com.example.timetableapp.fragment.dialogs.AddSubject;
 import com.example.timetableapp.fragment.dialogs.DelSlot;
 import com.example.timetableapp.model.DaySlot;
 import com.example.timetableapp.model.Subject;

@@ -56,7 +56,7 @@ public class DelSlot extends Dialog implements android.view.View.OnClickListener
     private EditText year_branch;
     private TextView subject_spinner;
     private  TextView day_of_week;
-    private ImageView add_slot, cancel, del_slot;
+    private ImageView cancel, del_slot;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private ArrayList<String> subjects = new ArrayList<>();
     private ArrayAdapter<String> adapter;
@@ -95,7 +95,6 @@ public class DelSlot extends Dialog implements android.view.View.OnClickListener
             slot_start = findViewById(R.id.slot_start_edit_text);
             subject_spinner = findViewById(R.id.subject_spinner);
             day_of_week = findViewById(R.id.day_of_week_spinner);
-            add_slot = findViewById(R.id.add_slot_button);
             cancel = findViewById(R.id.cancel_slot_button);
             del_slot = findViewById(R.id.del_slot_button);
 
@@ -144,7 +143,6 @@ public class DelSlot extends Dialog implements android.view.View.OnClickListener
 
             //TODO: get arraylist from database
 
-            add_slot.setOnClickListener(this);
             cancel.setOnClickListener(this);
             del_slot.setOnClickListener(this);
 
@@ -159,9 +157,6 @@ public class DelSlot extends Dialog implements android.view.View.OnClickListener
     {
         switch (view.getId())
         {
-            case R.id.add_slot_button:
-                AddSlotToDatabase();
-                break;
             case R.id.cancel_slot_button:
                 dismiss();
                 break;
@@ -173,51 +168,6 @@ public class DelSlot extends Dialog implements android.view.View.OnClickListener
         }
 
         dismiss();
-    }
-    private void AddSlotToDatabase()
-    {
-        try{
-            db
-                    .collection("timetable")
-                    .document("BTech")
-                    .collection(yearBranch + "SLOTS")
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task)
-                        {
-                            if(task.isSuccessful())
-                            {
-                                WeekDays weekDays = new WeekDays();
-                                for(QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult()))
-                                {
-
-                                    weekDays = document.toObject(WeekDays.class);
-                                }
-//                            Log.d("slots",weekDays.toString());
-                                weekDays.addWeekdaySubjectSlot(day_of_week.getText().toString(),slot_start.getText().toString(),slot_end.getText().toString(),subject_spinner.getText().toString());
-//                            Log.d("slots",weekDays.toString());
-                                db.collection("timetable").document("BTech").collection(yearBranch+"SLOTS").document("map").set(weekDays);
-                                Intent i = new Intent(activity, EditTimeTableActivity.class);
-                                i.putExtra("Subject", subjectHashMap);
-                                i.putExtra("yearBranch", yearBranch);
-                                activity.startActivity(i);
-                                activity.finish();
-                                activity.overridePendingTransition(0, 0);
-                            }
-                            else
-                            {
-                                //TODO: exception handling
-                            }
-
-                        }
-                    });
-        }catch (Exception e)
-        {
-            Log.d("addslot",e.toString());
-        }
-
-
     }
 
     private void DeleteSlotFromDatabase()

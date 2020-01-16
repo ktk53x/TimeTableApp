@@ -9,10 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".activity.Add_Subject"></activity>
-        <activity android:name=".EditTimeTableActivity" />
-        <activity android:name=".activity.ShowTimeTable" />
-        <activity android:name=".activity.MainActivity">
+        <activity android:name=".activity.Add_Subject" android:windowSoftInputMode="adjustPan"></activity>
+        <activity android:name=".EditTimeTableActivity" android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".activity.ShowTimeTable" android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".activity.MainActivity" android:windowSoftInputMode="adjustPan">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
