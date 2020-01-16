@@ -47,16 +47,16 @@ import static androidx.core.content.ContextCompat.startActivity;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AddSlot extends Dialog implements android.view.View.OnClickListener
+public class DelSlot extends Dialog implements android.view.View.OnClickListener
 {
     private Activity activity;
     private int position;
-    private Spinner slot_end;
+    private TextView slot_end;
     private TextView slot_start;
     private EditText year_branch;
-    private Spinner subject_spinner;
+    private TextView subject_spinner;
     private  TextView day_of_week;
-    private ImageView add_slot, cancel;
+    private ImageView add_slot, cancel, del_slot;
     FirebaseFirestore db = FirebaseFirestore.getInstance();
     private ArrayList<String> subjects = new ArrayList<>();
     private ArrayAdapter<String> adapter;
@@ -71,7 +71,7 @@ public class AddSlot extends Dialog implements android.view.View.OnClickListener
 
 
 
-    public AddSlot(int position, Activity activity, HashMap<String, Subject> subjects, String yearBranch, ArrayList<DaySlot> slots , Context context, ArrayList<String> breakOrNot, int j)
+    public DelSlot(int position, Activity activity, HashMap<String, Subject> subjects, String yearBranch, ArrayList<DaySlot> slots , Context context, ArrayList<String> breakOrNot, int j)
     {
         super(activity);
         this.activity = activity;
@@ -90,17 +90,20 @@ public class AddSlot extends Dialog implements android.view.View.OnClickListener
         try {
             super.onCreate(savedInstanceState);
             requestWindowFeature(Window.FEATURE_NO_TITLE);
-            setContentView(R.layout.fragment_add_slot);
+            setContentView(R.layout.fragment_del_slot);
             slot_end = findViewById(R.id.slot_end_edit_text);
             slot_start = findViewById(R.id.slot_start_edit_text);
             subject_spinner = findViewById(R.id.subject_spinner);
             day_of_week = findViewById(R.id.day_of_week_spinner);
             add_slot = findViewById(R.id.add_slot_button);
             cancel = findViewById(R.id.cancel_slot_button);
+            del_slot = findViewById(R.id.del_slot_button);
 
             ArrayList<String> dow = new ArrayList<>(Arrays.asList(getContext().getResources().getStringArray(R.array.day_of_week)));
             day_of_week.setText(dow.get(j)); //TODO:
             weekDays = new WeekDays();
+
+
 
             //yearBranch = year_branch.getText().toString().trim();
             ArrayList<String> slots = new ArrayList<>();
@@ -113,36 +116,38 @@ public class AddSlot extends Dialog implements android.view.View.OnClickListener
                 String sub = ((String)mapElement.getKey());
                 subjectList.add(sub);
             }
-
-            adapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item,subjectList);
-            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            subject_spinner.setAdapter(adapter);
-
+//
+//            adapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item,subjectList);
+//            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//            subject_spinner.setAdapter(adapter);
+//
             int end = slots.size();
-            for (int i = position + 1; i < breakOrNot.size(); i++) {
-                if (!breakOrNot.get(i).equals("Break"))
+            for (int i = position + 1; i < breakOrNot.size(); i++)
+            {
+                if (breakOrNot.get(i).equals(breakOrNot.get(position)))
+                    i++;
+                else
                 {
                     end = i;
                     break;
                 }
             }
             slot_start.setText(slots.get(position));
-            ArrayList<String> endslots = position == slots.size() ? new ArrayList<String>() : new ArrayList<String>(slots.subList(position + 1, Math.min(end + 1,slots.size())));
-            if(endslots.isEmpty()) endslots.add(Integer.toString(Integer.parseInt(slots.get(position).substring(0,2)) + 1) + ":00 PM");
-            //TODO : remove PM from everything
-            end_time_adapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item,endslots);
-            end_time_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-            slot_end.setAdapter(end_time_adapter);
+            slot_end.setText(slots.get(end));
+            subject_spinner.setText(breakOrNot.get(position));
+//            ArrayList<String> endslots = position == slots.size() ? new ArrayList<String>() : new ArrayList<String>(slots.subList(position + 1, Math.min(end + 1,slots.size())));
+//            if(endslots.isEmpty()) endslots.add(Integer.toString(Integer.parseInt(slots.get(position).substring(0,2)) + 1) + ":00 PM");
+//            //TODO : remove PM from everything
+//            end_time_adapter = new ArrayAdapter<>(activity, android.R.layout.simple_spinner_item,endslots);
+//            end_time_adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//            slot_end.setAdapter(end_time_adapter);
 
-
-//            ArrayList<String> days = new ArrayList<>(Arrays.asList(getContext().getResources().getStringArray(R.array.day_of_week)));
-//            ArrayAdapter<String> adapter_2 = new ArrayAdapter<>(activity,android.R.layout.simple_spinner_item,days);
-//            adapter_2.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//            day_of_week.setAdapter(adapter_2);
             //TODO: get arraylist from database
 
             add_slot.setOnClickListener(this);
             cancel.setOnClickListener(this);
+            del_slot.setOnClickListener(this);
+
         }
         catch (Exception e){
             Log.d("excetion",e.toString());
@@ -159,6 +164,9 @@ public class AddSlot extends Dialog implements android.view.View.OnClickListener
                 break;
             case R.id.cancel_slot_button:
                 dismiss();
+                break;
+            case R.id.del_slot_button:
+                DeleteSlotFromDatabase();
                 break;
             default:
                 break;
@@ -187,7 +195,7 @@ public class AddSlot extends Dialog implements android.view.View.OnClickListener
                                     weekDays = document.toObject(WeekDays.class);
                                 }
 //                            Log.d("slots",weekDays.toString());
-                                weekDays.addWeekdaySubjectSlot(day_of_week.getText().toString(),slot_start.getText().toString(),slot_end.getSelectedItem().toString(),subject_spinner.getSelectedItem().toString());
+                                weekDays.addWeekdaySubjectSlot(day_of_week.getText().toString(),slot_start.getText().toString(),slot_end.getText().toString(),subject_spinner.getText().toString());
 //                            Log.d("slots",weekDays.toString());
                                 db.collection("timetable").document("BTech").collection(yearBranch+"SLOTS").document("map").set(weekDays);
                                 Intent i = new Intent(activity, EditTimeTableActivity.class);
@@ -210,5 +218,44 @@ public class AddSlot extends Dialog implements android.view.View.OnClickListener
         }
 
 
+    }
+
+    private void DeleteSlotFromDatabase()
+    {
+//        String subject = subject_spinner.getSelectedItem().toString();
+//        String start_time = slot_start.getText().toString();
+//        String end_time = slot_end.getSelectedItem().toString();
+//        String day = day_of_week.getText().toString();
+        db
+                .collection("timetable")
+                .document("BTech")
+                .collection(yearBranch + "SLOTS")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task)
+                    {
+                        if(task.isSuccessful())
+                        {
+                            WeekDays weekDays = new WeekDays();
+                            for(QueryDocumentSnapshot document : Objects.requireNonNull(task.getResult())) {
+                                weekDays = document.toObject(WeekDays.class);
+                            }
+                            weekDays.delWeekdaySubjectSlot(day_of_week.getText().toString(),slot_start.getText().toString(),slot_end.getText().toString(),subject_spinner.getText().toString());
+                            db.collection("timetable").document("BTech").collection(yearBranch+"SLOTS").document("map").set(weekDays);
+                            Intent i = new Intent(activity, EditTimeTableActivity.class);
+                            i.putExtra("Subject", subjectHashMap);
+                            i.putExtra("yearBranch", yearBranch);
+                            activity.startActivity(i);
+                            activity.finish();
+                            activity.overridePendingTransition(0, 0);
+                        }
+                        else
+                        {
+                            //TODO: exception handling
+                        }
+
+                    }
+                });
     }
 }

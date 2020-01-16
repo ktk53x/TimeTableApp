@@ -154,7 +154,7 @@ public class EditTimeTableActivity extends AppCompatActivity{
                                         photo_slots.add(new DaySlot(slot_time.get(i), temp));
 
                                     }
-                                    DaySlotAdapter adapter = new DaySlotAdapter(getApplicationContext(), photo_slots, EditTimeTableActivity.this, subjects, yearBranch,slots);
+                                    DaySlotAdapter adapter = new DaySlotAdapter(getApplicationContext(), photo_slots, EditTimeTableActivity.this, subjects, yearBranch,slots, j);
                                     recyclerViews.get(j).setAdapter(adapter);
                                 }
                             }

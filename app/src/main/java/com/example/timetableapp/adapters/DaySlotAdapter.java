@@ -22,6 +22,7 @@ import com.example.timetableapp.R;
 import com.example.timetableapp.activity.MainActivity;
 import com.example.timetableapp.fragment.dialogs.AddSlot;
 import com.example.timetableapp.fragment.dialogs.AddSubject;
+import com.example.timetableapp.fragment.dialogs.DelSlot;
 import com.example.timetableapp.model.DaySlot;
 import com.example.timetableapp.model.Subject;
 import com.example.timetableapp.model.SubjectSlot;
@@ -36,10 +37,11 @@ public class DaySlotAdapter extends RecyclerView.Adapter<DaySlotAdapter.ViewHold
     private Activity activity;
     private HashMap<String, Subject> subjects;
     private String yearBranch;
+    private int j;
     ArrayList<String> breakOrNot;
 //    private send_data portal;
 
-    public DaySlotAdapter(Context context, ArrayList<DaySlot> slots, Activity activity, HashMap<String, Subject> subjects, String yearBranch, ArrayList<String> breakOrNot)
+    public DaySlotAdapter(Context context, ArrayList<DaySlot> slots, Activity activity, HashMap<String, Subject> subjects, String yearBranch, ArrayList<String> breakOrNot, int j)
     {
         this.context = context;
         this.slots = slots;
@@ -48,10 +50,18 @@ public class DaySlotAdapter extends RecyclerView.Adapter<DaySlotAdapter.ViewHold
 //        this.portal = portal;
         this.yearBranch = yearBranch;
         this.breakOrNot = breakOrNot;
+        this.j = j;
     }
     void AddSlotDialog(View view, int position, String yearBranch)
     {
-        AddSlot s = new AddSlot(position,activity, subjects, yearBranch, slots, context, breakOrNot);
+        AddSlot s = new AddSlot(position,activity, subjects, yearBranch, slots, context, breakOrNot, j);
+        s.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        s.show();
+    }
+    void DelSlotDialog(View view, int position, String yearBranch)
+    {
+        DelSlot s = new DelSlot(position,activity, subjects, yearBranch, slots, context, breakOrNot, j);
         s.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         s.show();
@@ -117,6 +127,10 @@ public class DaySlotAdapter extends RecyclerView.Adapter<DaySlotAdapter.ViewHold
             if(curBreak.equals("Break"))
             {
                 AddSlotDialog(view,position, yearBranch);
+            }
+            else
+            {
+                DelSlotDialog(view, position, yearBranch);
             }
         }
     }
