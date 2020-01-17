@@ -15,10 +15,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.timetableapp.R;
 import com.example.timetableapp.adapters.SubjectSlotAdapter;
+import com.example.timetableapp.model.Subject;
 import com.example.timetableapp.model.SubjectSlot;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 
 
 /**
@@ -28,11 +30,13 @@ public class Weekday extends Fragment {
     private ArrayList<SubjectSlot> thursday;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
+    private HashMap<String, Subject> subjectHashMap;
     TextView to_time;
 
-    public Weekday(ArrayList<SubjectSlot> weekDay)
+    public Weekday(ArrayList<SubjectSlot> weekDay, HashMap<String, Subject> subjectHashMap)
     {
         thursday = weekDay;
+        this.subjectHashMap = subjectHashMap;
     }
 
     @Override
@@ -45,7 +49,7 @@ public class Weekday extends Fragment {
         to_time.setText(endTime);
         recyclerView = rootView.findViewById(R.id.recycler_view);
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        adapter = new SubjectSlotAdapter(getActivity(), thursday);
+        adapter = new SubjectSlotAdapter(getActivity(), thursday, subjectHashMap);
         recyclerView.setAdapter(adapter);
         return rootView;
 

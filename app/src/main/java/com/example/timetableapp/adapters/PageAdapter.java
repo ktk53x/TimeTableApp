@@ -10,23 +10,27 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 
 import com.example.timetableapp.R;
 import com.example.timetableapp.fragment.Weekday;
+import com.example.timetableapp.model.Subject;
 import com.example.timetableapp.model.SubjectSlot;
 import com.example.timetableapp.model.WeekDays;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class PageAdapter extends FragmentStatePagerAdapter
 {
     private int number_of_tabs;
     private WeekDays weekDays;
     private Context context;
-    public PageAdapter(FragmentManager fm, int number_of_tabs, WeekDays weekDays, Context context)
+    private HashMap<String, Subject> subjectHashMap;
+    public PageAdapter(FragmentManager fm, int number_of_tabs, WeekDays weekDays, Context context, HashMap<String, Subject> subjectHashMap)
     {
         super(fm,FragmentStatePagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         this.number_of_tabs = number_of_tabs;
         this.weekDays = weekDays;
         this.context = context;
+        this.subjectHashMap = subjectHashMap;
     }
     @NonNull
     @Override
@@ -34,7 +38,7 @@ public class PageAdapter extends FragmentStatePagerAdapter
     {
         ArrayList<String> time_slots = new ArrayList<>(Arrays.asList(context.getResources().getStringArray(R.array.day_of_week)));
         String day = time_slots.get(i);
-        return new Weekday(getSubjectsSLots(day));
+        return new Weekday(getSubjectsSLots(day), subjectHashMap);
     }
 
     ArrayList<SubjectSlot> getSubjectsSLots(String day)

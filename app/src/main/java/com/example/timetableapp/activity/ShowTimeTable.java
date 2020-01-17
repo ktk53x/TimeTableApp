@@ -46,7 +46,7 @@ public class ShowTimeTable extends AppCompatActivity
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         tabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
         final ViewPager viewPager = findViewById(R.id.view_pager);
-        PageAdapter adapter = new PageAdapter(getSupportFragmentManager(), tabLayout.getTabCount(), weekDays,this);
+        PageAdapter adapter = new PageAdapter(getSupportFragmentManager(), tabLayout.getTabCount(), weekDays,this, subjects);
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
